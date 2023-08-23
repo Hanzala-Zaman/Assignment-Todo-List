@@ -1,0 +1,53 @@
+<div class="container">
+    <h1>TODO List</h1>
+<form (ngSubmit)="onSubmit(taskForm)" #taskForm="ngForm">
+    <div class="form-group">
+    <label for="task"><b>Task</b></label>
+    <input type="text"
+    class="form-control"
+    id="task"
+    placeholder="Tasks you want to do today"
+    ngModel name="task"
+    required>
+    </div>
+   <br>
+    <button 
+    [disabled]="taskForm.invalid"
+    id="submit" 
+    type="submit" 
+    class="btn btn-primary">Add Task</button>
+  </form>
+<br>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Tasks</th>
+        <th scope="col">Completed</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let temp of taskArr; index as i">
+          <ng-container *ngIf="editingIndex !== i; else editMode">
+            <td>{{ temp.taskName }}</td>
+            <td> <input (change)="onChange(i)" id="check-box" type="checkbox"></td>
+            <td><button class="btn btn-primary btn-sm" (click)="onEdit(i)">Edit</button></td>
+            <td><button class="btn btn-danger btn-sm" (click)="onDelete(i)">Delete</button></td>
+          </ng-container>
+          <ng-template #editMode>
+            <td>
+              <input [(ngModel)]="temp.taskName" type="text">
+            </td>
+            <td> <input (change)="onChange(i)" id="check-box" type="checkbox"></td>
+            <td>
+              <button class="btn btn-success btn-sm" (click)="onSave(i)">Save</button>&nbsp;
+              <button class="btn btn-secondary btn-sm" (click)="onCancelEdit(i)">Cancel</button>
+            </td>
+            <td></td>
+          </ng-template>
+        </tr>
+      </tbody>
+    </table>
+
+</div>
